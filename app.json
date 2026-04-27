@@ -1,0 +1,31 @@
+{
+  "name": "roadclock",
+  "description": "RoadClock backend deployment on Heroku from monorepo root",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
+  "env": {
+    "DEBUG": {
+      "value": "False"
+    },
+    "SECRET_KEY": {
+      "description": "Set a strong Django secret key"
+    },
+    "ALLOWED_HOSTS": {
+      "description": "Comma-separated hosts, for example your-app.herokuapp.com"
+    },
+    "CORS_ALLOWED_ORIGINS": {
+      "description": "Comma-separated origins, for example https://your-frontend.vercel.app"
+    },
+    "CSRF_TRUSTED_ORIGINS": {
+      "description": "Comma-separated origins, for example https://your-frontend.vercel.app"
+    }
+  }
+}

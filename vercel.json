@@ -1,0 +1,12 @@
+{
+  "framework": "vite",
+  "installCommand": "cd RoadClock_ui && npm ci",
+  "buildCommand": "cd RoadClock_ui && npm run build",
+  "outputDirectory": "RoadClock_ui/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

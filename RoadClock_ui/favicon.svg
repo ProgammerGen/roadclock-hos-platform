@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="roadclockBadge" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d96400" />
+      <stop offset="1" stop-color="#8f2300" />
+    </linearGradient>
+  </defs>
+
+  <rect x="1.5" y="1.5" width="61" height="61" rx="16" fill="url(#roadclockBadge)" stroke="#f3d9c8" stroke-width="2" />
+
+  <g fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 38V24a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v14" />
+    <path d="M42 30h7l5 6v2h-2" />
+    <path d="M16 38h4M30 38h12M54 38h-2" />
+    <circle cx="26" cy="40" r="3.6" />
+    <circle cx="46" cy="40" r="3.6" />
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+# Monorepo root .gitignore for RoadClock backend + frontend
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files (keep templates)
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.production.example
+!**/.env.heroku.example
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+**/venv/
+**/.venv/
+
+# Django runtime artifacts
+RoadClock/db.sqlite3
+RoadClock/staticfiles/
+
+# Node / frontend
+RoadClock_ui/node_modules/
+RoadClock_ui/dist/
+RoadClock_ui/dist-ssr/
+RoadClock_ui/coverage/
+RoadClock_ui/.vite/
+RoadClock_ui/*.tsbuildinfo
+RoadClock_ui/.vercel/
+.vercel/
+
+# Test caches
+.cache/
+coverage/
