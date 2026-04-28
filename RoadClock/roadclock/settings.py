@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     DEBUG=(bool, True),
 )
-environ.Env.read_env(str(BASE_DIR / ".env"), overwrite=True)
+environ.Env.read_env(str(BASE_DIR / ".env"), overwrite=False)
 
                                                               
                                                                        
@@ -81,14 +81,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "roadclock.wsgi.application"
 
           
-                                                               
-DATABASE_URL = env("DATABASE_URL", default=os.getenv("DATABASE_PUBLIC_URL", ""))
+DATABASE_PUBLIC_URL = env("DATABASE_PUBLIC_URL", default="")
+DATABASE_URL = DATABASE_PUBLIC_URL or env("DATABASE_URL", default="")
 
 if DATABASE_URL:
     try:
         ssl_required = env.bool("DATABASE_SSL_REQUIRE", default=False)
-        database_config = dj_database_url.config(
-            default=DATABASE_URL,
+        database_config = dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=600,
             ssl_require=ssl_required,
         )
