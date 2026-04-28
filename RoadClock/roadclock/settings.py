@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from urllib.parse import urlparse
 from django.core.exceptions import ImproperlyConfigured
 import environ
 import dj_database_url
@@ -81,8 +82,56 @@ TEMPLATES = [
 WSGI_APPLICATION = "roadclock.wsgi.application"
 
           
-DATABASE_PUBLIC_URL = env("DATABASE_PUBLIC_URL", default="")
-DATABASE_URL = DATABASE_PUBLIC_URL or env("DATABASE_URL", default="")
+def database_url_parts(database_url):
+    try:
+        parsed = urlparse(database_url)
+    except ValueError:
+        return None, None
+
+    return parsed.hostname, parsed.port
+
+
+def database_url_error(source, database_url):
+    hostname, _ = database_url_parts(database_url)
+    railway_private_domain = env("RAILWAY_PRIVATE_DOMAIN", default="")
+
+    if not hostname:
+        return f"{source} is missing a hostname."
+
+    if source == "DATABASE_PUBLIC_URL" and hostname.endswith(".railway.internal"):
+        return f"{source} points to private Railway host '{hostname}'."
+
+    if railway_private_domain and hostname == railway_private_domain:
+        return (
+            f"{source} points to this Railway web service host '{hostname}', "
+            "not the Postgres service."
+        )
+
+    return None
+
+
+DATABASE_URL = ""
+DATABASE_URL_SOURCE = ""
+database_url_errors = []
+
+for source, value in (
+    ("DATABASE_PUBLIC_URL", env("DATABASE_PUBLIC_URL", default="")),
+    ("DATABASE_URL", env("DATABASE_URL", default="")),
+):
+    if not value:
+        continue
+
+    error = database_url_error(source, value)
+    if error:
+        database_url_errors.append(error)
+        continue
+
+    DATABASE_URL = value
+    DATABASE_URL_SOURCE = source
+    break
+
+if not DATABASE_URL and database_url_errors:
+    raise ImproperlyConfigured(" ".join(database_url_errors))
 
 if DATABASE_URL:
     try:
@@ -103,6 +152,11 @@ if DATABASE_URL:
         )
 
         DATABASES = {"default": database_config}
+        database_host, database_port = database_url_parts(DATABASE_URL)
+        print(
+            "Using database config from "
+            f"{DATABASE_URL_SOURCE}: {database_host}:{database_port or 5432}"
+        )
     except Exception as exc:
         raise ImproperlyConfigured(
             "DATABASE_URL is invalid or could not be parsed."
