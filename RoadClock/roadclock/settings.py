@@ -27,7 +27,7 @@ environ.Env.read_env(str(BASE_DIR / ".env"), overwrite=True)
 DEV_SECRET_KEY = "dev-only-secret-key-change-me"
 
 SECRET_KEY = env("SECRET_KEY", default=DEV_SECRET_KEY)
-DEBUG = env.str("DEBUG", default="True").strip().lower() in {"1", "true", "yes", "on"}
+DEBUG = False
 
 if not DEBUG and SECRET_KEY == DEV_SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the environment when DEBUG is False.")
