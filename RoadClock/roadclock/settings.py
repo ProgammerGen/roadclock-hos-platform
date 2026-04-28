@@ -86,6 +86,7 @@ DATABASE_URL ="postgresql://postgres:TScPwSZAEmQsCrzVYyqBIBvdXtdkYxAp@postgres.r
 
 if DATABASE_URL:
     DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
+    print(f"Using database from DATABASE_URL: {DATABASE_URL}")
 else:
     DATABASES = {
         "default": {
