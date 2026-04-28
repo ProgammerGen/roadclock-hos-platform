@@ -16,6 +16,7 @@ from django.core.exceptions import ImproperlyConfigured
 import environ
 import dj_database_url
 import os
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
@@ -82,6 +83,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "roadclock.wsgi.application"
 
           
+SKIP_DATABASE_URL_VALIDATION_COMMANDS = {"collectstatic"}
+SKIP_DATABASE_URL_VALIDATION = any(
+    command in sys.argv for command in SKIP_DATABASE_URL_VALIDATION_COMMANDS
+)
+
+
 def database_url_parts(database_url):
     try:
         parsed = urlparse(database_url)
@@ -133,13 +140,14 @@ for source, value in (
     error = database_url_error(source, value)
     if error:
         database_url_errors.append(error)
-        continue
+        if not SKIP_DATABASE_URL_VALIDATION:
+            continue
 
     DATABASE_URL = value
     DATABASE_URL_SOURCE = source
     break
 
-if not DATABASE_URL and database_url_errors:
+if not DATABASE_URL and database_url_errors and not SKIP_DATABASE_URL_VALIDATION:
     raise ImproperlyConfigured(" ".join(database_url_errors))
 
 if DATABASE_URL:
@@ -166,6 +174,8 @@ if DATABASE_URL:
             "Using database config from "
             f"{DATABASE_URL_SOURCE}: {database_host}:{database_port or 5432}"
         )
+        if database_url_errors:
+            print("Database configuration warning: " + " ".join(database_url_errors))
     except Exception as exc:
         raise ImproperlyConfigured(
             "DATABASE_URL is invalid or could not be parsed."
