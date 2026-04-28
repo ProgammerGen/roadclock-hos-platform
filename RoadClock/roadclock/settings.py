@@ -94,12 +94,21 @@ def database_url_parts(database_url):
 def database_url_error(source, database_url):
     hostname, _ = database_url_parts(database_url)
     railway_private_domain = env("RAILWAY_PRIVATE_DOMAIN", default="")
+    allow_railway_private_db = env.bool(
+        "ALLOW_RAILWAY_PRIVATE_DATABASE_URL",
+        default=False,
+    )
 
     if not hostname:
         return f"{source} is missing a hostname."
 
-    if source == "DATABASE_PUBLIC_URL" and hostname.endswith(".railway.internal"):
-        return f"{source} points to private Railway host '{hostname}'."
+    if hostname.endswith(".railway.internal") and not allow_railway_private_db:
+        return (
+            f"{source} points to private Railway host '{hostname}'. "
+            "Set DATABASE_PUBLIC_URL to the Postgres public TCP proxy URL, or set "
+            "ALLOW_RAILWAY_PRIVATE_DATABASE_URL=True only if this service can "
+            "resolve Railway private networking."
+        )
 
     if railway_private_domain and hostname == railway_private_domain:
         return (
