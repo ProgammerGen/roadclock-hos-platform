@@ -30,7 +30,7 @@ RoadClock/
   Procfile
   runtime.txt
   .env.example
-  .env.heroku.example
+  .env.railway.example
 ```
 
 Ignore rules are managed by the monorepo root `.gitignore`.
@@ -90,6 +90,16 @@ Start server:
 python manage.py runserver
 ```
 
+## Deployment (Railway)
+
+Railway reads the backend production command from `RoadClock/Procfile`:
+
+```text
+web: gunicorn roadclock.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
+```
+
+Set production env vars using `.env.railway.example` as a template.
+
 ## API Surface
 
 Base:
@@ -124,22 +134,6 @@ Custom endpoints:
 - `audit_events`
 - `hos_exceptions`
 - `export_records`
-
-## Heroku Deployment
-
-Configured files:
-
-- `Procfile`
-  - `release: python manage.py migrate --noinput`
-  - `web: gunicorn roadclock.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120`
-- `runtime.txt`
-- `.env.heroku.example`
-
-The app reads `DATABASE_URL` automatically when Heroku Postgres is attached.
-
-For full mono-repo deployment flow, see project root:
-
-- `../DEPLOYMENT_HEROKU_VERCEL.md`
 
 ## Security Note
 

@@ -27,12 +27,12 @@ environ.Env.read_env(str(BASE_DIR / ".env"), overwrite=True)
 DEV_SECRET_KEY = "dev-only-secret-key-change-me"
 
 SECRET_KEY = env("SECRET_KEY", default=DEV_SECRET_KEY)
-DEBUG = False
+DEBUG = env.bool("DEBUG", default=False)
 
 if not DEBUG and SECRET_KEY == DEV_SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the environment when DEBUG is False.")
 
-ALLOWED_HOSTS = ['web-production-450916.up.railway.app']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
                         
 

@@ -73,7 +73,7 @@ VITE_API_BASE_URL=http://127.0.0.1:8000/api
 Production example:
 
 ```env
-VITE_API_BASE_URL=https://your-heroku-app.herokuapp.com/api
+VITE_API_BASE_URL=https://your-railway-app.up.railway.app/api
 ```
 
 ## Scripts
@@ -99,7 +99,7 @@ Frontend API client is in `src/lib/api.ts`. It expects backend endpoints under t
 
 If `VITE_API_BASE_URL` is missing in production, the app throws a runtime error by design.
 
-## Deployment
+## Deployment (Vercel)
 
 Vercel config is defined in `vercel.json`:
 
@@ -107,7 +107,3 @@ Vercel config is defined in `vercel.json`:
 - Build command: `npm run build`
 - Output directory: `dist`
 - SPA rewrite to `index.html`
-
-For complete Heroku + Vercel deployment instructions, see:
-
-- `../DEPLOYMENT_HEROKU_VERCEL.md`

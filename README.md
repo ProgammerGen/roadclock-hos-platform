@@ -9,28 +9,10 @@ This repository contains:
 
 ## Architecture
 
-- Backend deployment target: Heroku
+- Backend deployment target: Railway
 - Frontend deployment target: Vercel
 - Frontend talks to backend through `VITE_API_BASE_URL` and uses the `/api` prefix
-- Deployment is configured from repository root (single-repo deployment workflow)
-
-Root deployment files:
-
-- `Procfile`
-- `requirements.txt`
-- `runtime.txt`
-- `vercel.json`
-- `app.json`
-
-Current deployment documentation:
-
-- `DEPLOYMENT_HEROKU_VERCEL.md`
-- `RoadClock/.env.heroku.example`
-- `RoadClock_ui/.env.production.example`
-
-Repository hygiene:
-
-- Root ignore file: `.gitignore` (main ignore policy for the entire monorepo)
+- Deployment configs now live inside each app folder
 
 ## Product Features
 
@@ -55,7 +37,7 @@ Backend (`RoadClock`):
 - PostgreSQL
 - `django-environ` for environment config
 - `django-cors-headers` for CORS
-- Gunicorn + WhiteNoise for Heroku runtime
+- Gunicorn + WhiteNoise for Railway runtime
 
 Frontend (`RoadClock_ui`):
 
@@ -73,12 +55,6 @@ Frontend (`RoadClock_ui`):
 Assesment/
   .gitignore
   README.md
-  DEPLOYMENT_HEROKU_VERCEL.md
-  Procfile
-  requirements.txt
-  runtime.txt
-  vercel.json
-  app.json
   RoadClock/
     manage.py
     roadclock/           # Django project settings/urls
@@ -87,7 +63,7 @@ Assesment/
     Procfile
     runtime.txt
     .env.example
-    .env.heroku.example
+    .env.railway.example
   RoadClock_ui/
     src/
       routes/            # dashboard, logs, calculator, daily-log, export, rods-history
@@ -247,17 +223,12 @@ npm run preview
 
 Target setup:
 
-- Backend on Heroku
+- Backend on Railway
 - Frontend on Vercel
-- Single monorepo deploy from root directory
-
-Use the complete runbook:
-
-- `DEPLOYMENT_HEROKU_VERCEL.md`
 
 Production env templates:
 
-- Backend: `RoadClock/.env.heroku.example`
+- Backend: `RoadClock/.env.railway.example`
 - Frontend: `RoadClock_ui/.env.production.example`
 
 ## Security and MVP Notes
@@ -280,6 +251,6 @@ Production env templates:
 
 `CORS or CSRF errors in production`
 
-- Ensure Heroku backend has correct `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS`.
+- Ensure Railway backend has correct `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS`.
 - If using Vercel previews, configure `CORS_ALLOWED_ORIGIN_REGEXES`.
 # roadclock-hos-platform
