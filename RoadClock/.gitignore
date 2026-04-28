@@ -1,6 +1,8 @@
 .env
 .env.*
 !.env.example
+!.env.heroku.example
+!.env.railway.example
 __pycache__/
 *.py[cod]
 .pytest_cache/

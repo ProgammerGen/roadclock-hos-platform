@@ -23,6 +23,7 @@ lerna-debug.log*
 !**/.env.example
 !**/.env.production.example
 !**/.env.heroku.example
+!**/.env.railway.example
 
 # Python / Django
 __pycache__/
