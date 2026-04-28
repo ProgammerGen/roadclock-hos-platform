@@ -35,7 +35,14 @@ DEBUG = env.bool("DEBUG", default=False)
 if not DEBUG and SECRET_KEY == DEV_SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the environment when DEBUG is False.")
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        "ALLOWED_HOSTS",
+        "127.0.0.1,localhost,web-production-450916.up.railway.app"
+    ).split(",")
+    if host.strip()
+]
 
                         
 
