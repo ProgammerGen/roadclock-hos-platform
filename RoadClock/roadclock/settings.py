@@ -85,13 +85,22 @@ WSGI_APPLICATION = "roadclock.wsgi.application"
 DATABASE_URL ="postgresql://postgres:TScPwSZAEmQsCrzVYyqBIBvdXtdkYxAp@postgres.railway.internal:5432/railway"
 
 if DATABASE_URL:
-    if DATABASE_URL:
-        DATABASES = {
-            'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
-        }
-        print(f"Using database from DATABASE_URL: {DATABASE_URL}")
-    else:
-        raise ImproperlyConfigured("DATABASE_URL is not set properly")
+    try:
+        database_config = dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+
+        if not database_config or not database_config.get("ENGINE"):
+            raise ValueError("Parsed database configuration is empty.")
+
+        DATABASES = {"default": database_config}
+        print("Using database from DATABASE_URL.")
+    except Exception as exc:
+        raise ImproperlyConfigured(
+            "DATABASE_URL is invalid or could not be parsed."
+        ) from exc
 else:
     DATABASES = {
         "default": {
