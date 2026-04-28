@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 import environ
+import dj_database_url
+import os
 
-                                                                
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     DEBUG=(bool, True),
@@ -81,19 +82,19 @@ WSGI_APPLICATION = "roadclock.wsgi.application"
 
           
                                                                
-DATABASE_URL = env.str("DATABASE_URL", default="").strip()
+DATABASE_URL = os.getenv('DATABASE_URL', '')
 
 if DATABASE_URL:
-    DATABASES = {"default": env.db("DATABASE_URL")}
+    DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
 else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": env("DATABASE_NAME", default="roadclockdb"),
-            "USER": env("DATABASE_USER", default="postgres"),
-            "PASSWORD": env("DATABASE_PASSWORD", default="password"),
-            "HOST": env("DATABASE_HOST", default="localhost"),
-            "PORT": env("DATABASE_PORT", default="5432"),
+            "NAME": os.getenv('DATABASE_NAME', 'roadclockdb'),
+            "USER": os.getenv('DATABASE_USER', 'postgres'),
+            "PASSWORD": os.getenv('DATABASE_PASSWORD', 'password'),
+            "HOST": os.getenv('DATABASE_HOST', 'localhost'),
+            "PORT": os.getenv('DATABASE_PORT', '5432'),
         }
     }
 
