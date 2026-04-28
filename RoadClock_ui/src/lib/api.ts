@@ -4,7 +4,12 @@ const DEFAULT_DEV_API_BASE = "http://127.0.0.1:8000/api";
 const RAW_API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
   (import.meta.env.DEV ? DEFAULT_DEV_API_BASE : "");
-const API_BASE = RAW_API_BASE.replace(/\/$/, "");
+const API_BASE_ROOT = RAW_API_BASE.replace(/\/$/, "");
+const API_BASE = API_BASE_ROOT
+  ? API_BASE_ROOT.endsWith("/api")
+    ? API_BASE_ROOT
+    : `${API_BASE_ROOT}/api`
+  : "";
 
 type PaginatedResponse<T> = {
   count: number;
